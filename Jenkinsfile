@@ -2,17 +2,18 @@ pipeline {
     agent any
 
     environment {
-        SLACK_WEBHOOK = credentials('slack-webhook') 
+        SLACK_WEBHOOK = credentials('slack-webhook') // Secret text credential in Jenkins
+        GITHUB_REPO = 'https://github.com/Seetharamj/Slack-Notification-Using-Terraform-jenkins.git'
     }
 
     stages {
         stage('Slack: Pipeline Started') {
             steps {
-                sh '''
+                sh """
                 curl -X POST -H 'Content-type: application/json' \
-                --data '{"text":"🟡 *Pipeline Started:* `${JOB_NAME} #${BUILD_NUMBER}`"}' \
-                $SLACK_WEBHOOK
-                '''
+                --data '{\"text\":\"🟡 *Pipeline Started* for job ${JOB_NAME} #${BUILD_NUMBER}\\n🔗 GitHub: ${GITHUB_REPO}\"}' \
+                ${SLACK_WEBHOOK}
+                """
             }
         }
 
@@ -30,19 +31,19 @@ pipeline {
 
     post {
         success {
-            sh '''
+            sh """
             curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":"✅ *SUCCESS:* `${JOB_NAME} #${BUILD_NUMBER}`"}' \
-            $SLACK_WEBHOOK
-            '''
+            --data '{\"text\":\"✅ *SUCCESS:* ${JOB_NAME} #${BUILD_NUMBER}\\n🔗 GitHub: ${GITHUB_REPO}\"}' \
+            ${SLACK_WEBHOOK}
+            """
         }
 
         failure {
-            sh '''
+            sh """
             curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":"❌ *FAILED:* `${JOB_NAME} #${BUILD_NUMBER}`"}' \
-            $SLACK_WEBHOOK
-            '''
+            --data '{\"text\":\"❌ *FAILED:* ${JOB_NAME} #${BUILD_NUMBER}\\n🔗 GitHub: ${GITHUB_REPO}\"}' \
+            ${SLACK_WEBHOOK}
+            """
         }
     }
 }
