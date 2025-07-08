@@ -10,10 +10,10 @@ pipeline {
         stage('Slack: Pipeline Started') {
             steps {
                 sh '''
-               curl -X POST -H "Content-type: application/json" \
---data "{\"text\":\"🟡 *Pipeline Started* for job ${JOB_NAME} #${BUILD_NUMBER}\\n🔗 GitHub: ${GITHUB_REPO}\"}" \
-"$SLACK_WEBHOOK"
-'''
+                curl -X POST -H "Content-type: application/json" \
+                --data "{\"text\":\"🟡 *Pipeline Started* for job ${JOB_NAME} #${BUILD_NUMBER}\\n🔗 GitHub: ${GITHUB_REPO}\"}" \
+                "$SLACK_WEBHOOK"
+                '''
             }
         }
 
