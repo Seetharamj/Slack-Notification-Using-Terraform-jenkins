@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SLACK_WEBHOOK = credentials('slack-webhook') // Webhook stored in Jenkins credentials
+        SLACK_WEBHOOK = credentials('slack-webhook')
         GITHUB_REPO = 'https://github.com/Seetharamj/Slack-Notification-Using-Terraform-jenkins.git'
     }
 
